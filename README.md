@@ -74,3 +74,20 @@ if (noSleep.isEnabled) {
   console.log('NoSleep is disabled');
 }
 ```
+## 🌟 Why You Should Use **no-sleep-js**
+
+In today’s world, where performance and user experience are critical, keeping a device from going to sleep can be essential for certain types of applications. 
+
+✅ **Improved User Experience:** Prevent interruptions during critical activities.  
+🎮 **Perfect for Interactive Applications:** Ideal for gaming platforms, media players, and more.  
+🌐 **Cross-Browser Compatibility:** Works seamlessly on modern and older devices.  
+⚡ **Lightweight & Efficient:** Keeps devices awake without draining the battery unnecessarily.  
+
+Whether you're building an interactive video player, a gaming platform, or any web-based service that requires continuous screen activity, **no-sleep-js** provides a reliable solution. It’s built to be cross-browser and fully functional on both modern and older devices, ensuring your users won’t face interruptions during their experience.
+
+## License
+
+MIT License  
+Copyright (c) 2024 Vitalii Semianchuk  
+
+[LinkedIn Profile](https://www.linkedin.com/in/vitalii-semianchuk-9812a786/)
