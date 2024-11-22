@@ -74,6 +74,61 @@ if (noSleep.isEnabled) {
   console.log('NoSleep is disabled');
 }
 ```
+
+## 🔧 New Feature:
+
+With the latest update to **no-sleep-app**, a set of **default options** has been introduced to make customization easier when you instantiate the library without providing specific configuration options.
+
+### ✅ **Easy Customization:** Use default options for basic functionality or modify them to suit your needs.  
+🛠️ **Control Behavior:** Configure how the app prevents sleep with options for strategies, retry intervals, and fallback mechanisms.  
+⚙️ **Flexible and Reliable:** Choose the Wake Lock strategy, set retry intervals, and enable or disable fallbacks based on device capabilities.  
+⚡ **Performance Optimization:** Control when and how often the app retries to ensure the best experience without unnecessary retries.
+
+```javascript
+const defaultOptions = {
+  strategy: ''wakeLock'|'video'|'legacy'',   // Default strategy is wakeLock
+  retryInterval: 10000,    // Default retry interval is 10 seconds
+  fallbackEnabled: true,   // Default fallback is enabled
+};
+```
+
+### 🔧 **What You Can Control with `defaultOptions`**
+
+- **`strategy: ''wakeLock'|'video'|'legacy'}'`**
+  
+- **`retryInterval: 10000`**: Control how often the library retries to enable the Wake Lock API if it initially fails. By default, it will retry every **10 seconds**.
+
+- **`fallbackEnabled: true`**: Enable or disable fallback mechanisms, such as video playback, when Wake Lock isn't supported. By default, this is set to **true**.
+
+```javascript
+import NoSleepApp from 'no-sleep-app';
+
+// Instantiate with default options
+const noSleep = new NoSleepApp( {
+  strategy: 'wakeLock',
+  retryInterval: 10000,  
+  fallbackEnabled: true,  
+});
+```
+
+### 🔄 Customize `defaultOptions`:
+
+If you want to modify the default behavior, simply pass custom options during initialization:
+
+```javascript
+const customOptions = {
+  strategy: 'video',   // Use video strategy instead of wakeLock
+  retryInterval: 5000,  // Retry every 5 seconds
+  fallbackEnabled: false, // Disable fallback mechanisms
+};
+
+const noSleep = new NoSleepApp(customOptions);
+
+noSleep.enable();
+```
+
+This makes it easy to control how **no-sleep-app** behaves across different devices and platforms!
+
 ## 🌟 Why You Should Use **no-sleep-js**
 
 In today’s world, where performance and user experience are critical, keeping a device from going to sleep can be essential for certain types of applications. 
