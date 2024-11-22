@@ -18,19 +18,32 @@ const isNativeWakeLockSupported = () => "wakeLock" in navigator;
  * It uses the Wake Lock API, older iOS hacks, or video playback depending on device support.
  */
 export default class NoSleepApp {
-  constructor() {
+  /**
+   * @param {Object} options Configuration options for NoSleepApp.
+   * @param {'wakeLock'|'video'|'legacy'} [options.strategy='wakeLock'] The strategy to use for preventing sleep.
+   * @param {number} [options.retryInterval=10000] Interval to retry enabling Wake Lock if it fails (in milliseconds).
+   * @param {boolean} [options.fallbackEnabled=true] Whether to enable fallback mechanisms if Wake Lock is not available.
+   */
+  constructor(options = {}) {
+    const defaultOptions = {
+      strategy: 'wakeLock', // Default strategy is wakeLock
+      retryInterval: 10000,  // Default retry interval is 10 seconds
+      fallbackEnabled: true, // Default fallback is enabled
+    };
+    this.options = { ...defaultOptions, ...options };
+
     /**
      * @type {boolean} Indicates whether NoSleepApp is currently enabled.
      */
     this.enabled = false;
 
-    if (isNativeWakeLockSupported()) {
+    if (isNativeWakeLockSupported() && this.options.strategy === 'wakeLock') {
       /** @type {WakeLockSentinel|null} The active Wake Lock instance. */
       this._wakeLock = null;
 
       /** @type {VisibilityListener|null} Listener for visibility changes to re-enable Wake Lock. */
       this.visibilityListener = new VisibilityListener(this.enable.bind(this));
-    } else if (isOldIOS()) {
+    } else if (isOldIOS() && this.options.strategy === 'legacy') {
       /** @type {number|null} Timer ID for the iOS hack to prevent sleep. */
       this.noSleepTimer = null;
     } else {
@@ -55,7 +68,7 @@ export default class NoSleepApp {
    * @throws {Error} Throws an error if enabling fails.
    */
   async enable() {
-    if (isNativeWakeLockSupported()) {
+    if (this.options.strategy === 'wakeLock' && isNativeWakeLockSupported()) {
       try {
         this._wakeLock = await navigator.wakeLock.request("screen");
         this.enabled = true;
@@ -66,9 +79,9 @@ export default class NoSleepApp {
         console.error(`${err.name}, ${err.message}`);
         throw err;
       }
-    } else if (isOldIOS()) {
+    } else if (this.options.strategy === 'legacy' && isOldIOS()) {
       this._enableOldIOS();
-    } else {
+    } else if (this.options.strategy === 'video') {
       await this._enableVideoPlayback();
     }
   }
@@ -120,7 +133,7 @@ export default class NoSleepApp {
    * Stops Wake Lock, iOS hack, or video playback depending on the platform.
    */
   disable() {
-    if (isNativeWakeLockSupported()) {
+    if (this.options.strategy === 'wakeLock' && isNativeWakeLockSupported()) {
       if (this._wakeLock) {
         this._wakeLock.release();
       }
@@ -128,18 +141,15 @@ export default class NoSleepApp {
       if (this.visibilityListener) {
         this.visibilityListener.removeListeners();
       }
-    } else if (isOldIOS()) {
+    } else if (this.options.strategy === 'legacy' && isOldIOS()) {
       if (this.noSleepTimer) {
         console.warn("NoSleep disabled for older iOS devices.");
         clearInterval(this.noSleepTimer);
         this.noSleepTimer = null;
       }
-    } else {
+    } else if (this.options.strategy === 'video') {
       this.noSleepElement.pause();
     }
     this.enabled = false;
   }
 }
-
-// Expose NoSleepApp globally for use in browser environments.
-window.NoSleepApp = NoSleepApp;
