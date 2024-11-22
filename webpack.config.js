@@ -4,12 +4,11 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    library: "NoSleepJs",
+    library: "NoSleepApp",
     libraryTarget: "umd",
     globalObject: "this",
   },
-  mode: 'development', 
-
+  mode: 'production', 
   module: {
     rules: [
       {

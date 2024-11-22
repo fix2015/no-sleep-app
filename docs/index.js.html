@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @fileoverview NoSleepJs is a utility for preventing devices from sleeping 
+ * @fileoverview NoSleepApp is a utility for preventing devices from sleeping 
  * by leveraging different strategies depending on platform capabilities.
  */
 
@@ -42,13 +42,13 @@ import { isOldIOS } from './detect.js';
 const isNativeWakeLockSupported = () => "wakeLock" in navigator;
 
 /**
- * NoSleepJs prevents devices from entering sleep mode.
+ * NoSleepApp prevents devices from entering sleep mode.
  * It uses the Wake Lock API, older iOS hacks, or video playback depending on device support.
  */
-export default class NoSleepJs {
+export default class NoSleepApp {
   constructor() {
     /**
-     * @type {boolean} Indicates whether NoSleepJs is currently enabled.
+     * @type {boolean} Indicates whether NoSleepApp is currently enabled.
      */
     this.enabled = false;
 
@@ -69,15 +69,15 @@ export default class NoSleepJs {
   }
 
   /**
-   * Checks if NoSleepJs is enabled.
-   * @returns {boolean} True if NoSleepJs is enabled.
+   * Checks if NoSleepApp is enabled.
+   * @returns {boolean} True if NoSleepApp is enabled.
    */
   get isEnabled() {
     return this.enabled;
   }
 
   /**
-   * Enables the NoSleepJs functionality.
+   * Enables the NoSleepApp functionality.
    * Uses the Wake Lock API, older iOS hack, or video playback as appropriate.
    * @returns {Promise&lt;void>} Resolves when enabling is complete.
    * @throws {Error} Throws an error if enabling fails.
@@ -144,7 +144,7 @@ export default class NoSleepJs {
   }
 
   /**
-   * Disables NoSleepJs functionality.
+   * Disables NoSleepApp functionality.
    * Stops Wake Lock, iOS hack, or video playback depending on the platform.
    */
   disable() {
@@ -169,8 +169,8 @@ export default class NoSleepJs {
   }
 }
 
-// Expose NoSleepJs globally for use in browser environments.
-window.NoSleepJs = NoSleepJs;
+// Expose NoSleepApp globally for use in browser environments.
+window.NoSleepApp = NoSleepApp;
 </code></pre>
         </article>
     </section>

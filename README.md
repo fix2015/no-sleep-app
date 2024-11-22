@@ -1,49 +1,62 @@
-# no-sleep-js
+# 🌙 no-sleep-app
 
-**no-sleep-js** is a simple yet powerful JavaScript library designed to solve a common problem: preventing devices from going to sleep during important activities like video playback or long-running tasks. Whether you’re building a media player, an interactive app, or a web-based experience where uninterrupted screen activity is crucial, **no-sleep-js** has got you covered.
+**no-sleep-app** is a lightweight, powerful JavaScript library designed to prevent devices from going to sleep during crucial tasks. Whether you’re developing a media player, an interactive app, or a seamless web experience, **no-sleep-app** ensures your application keeps the screen active across all platforms.
 
-## Why no-sleep-js?
+---
 
-As web developers, we’ve all faced the challenge of ensuring that our applications don’t get interrupted by the device entering sleep mode. On mobile and older devices, this can disrupt the user experience and cause unwanted delays. With **no-sleep-js**, you can keep the screen active, no matter the platform, without needing complex configurations or platform-specific hacks.
+## 🌟 Why no-sleep-app?
 
-### Key Features:
+As developers, maintaining an uninterrupted user experience is paramount. However, devices often go into sleep mode during long-running tasks or media playback, disrupting users. **no-sleep-app** offers a seamless, cross-platform solution with minimal configuration.
+
+---
+
+### Key Features
+
 - **Universal Device Support:** Works across modern browsers and older iOS devices.
 - **Lightweight and Simple:** Easy to integrate with minimal configuration needed.
 - **Cross-Platform Compatibility:** Handles wake lock and video playback to prevent sleep on all devices.
 - **Performance Friendly:** Designed to prevent screen dimming and sleep without draining battery life unnecessarily.
 
-## How It Works
+---
 
-**no-sleep-js** primarily uses the **Screen Wake Lock API** (when available) to keep the device screen active. For legacy devices, such as older iOS versions, it falls back to a simple video playback trick to keep the screen awake. This ensures that your app or site runs smoothly, no matter the device the user is on.
+## ⚙️ How It Works
 
-## Platform Support
+**no-sleep-app** uses the **Screen Wake Lock API** (when available) to keep the device screen active. For legacy devices, such as older iOS versions, it falls back to a simple video playback trick. This ensures reliable performance, no matter the device or platform.
 
-**no-sleep-js** is fully compatible with both **iOS** and **Android** devices. Whether your users are on mobile phones or tablets, this library will keep their screens active during important tasks. The library automatically detects the platform and applies the most appropriate method to prevent the device from going to sleep.
+---
 
-## Installation
+## 📱 Platform Support
 
-To install **no-sleep-js**, simply include it in your project via npm or yarn:
+**no-sleep-app** is fully compatible with both **iOS** and **Android** devices. Whether your users are on mobile phones or tablets, this library will keep their screens active during important tasks. The library automatically detects the platform and applies the most appropriate method to prevent the device from going to sleep.
+
+---
+
+## 🚀 Installation
+
+Install **no-sleep-app** via npm or yarn:
 
 ```bash
-npm install no-sleep-js
+npm install no-sleep-app
 ```
 
 or
 
 ```bash
-yarn add no-sleep-js
+yarn add no-sleep-app
 ```
 
-Alternatively, you can directly include the `no-sleep.js` script in your HTML.
+Alternatively, you can include the `no-sleep-app.js` script directly in your HTML.
 
-## Usage
+---
 
-To use **no-sleep-js**, you simply need to instantiate the library and call its `enable()` and `disable()` methods to start and stop preventing sleep mode:
+## 📖 Usage
+
+To use **no-sleep-app**, instantiate the library and call its `enable()` and `disable()` methods to start and stop preventing sleep mode:
 
 ```javascript
-import NoSleepJs from 'no-sleep-js';
+import NoSleepApp from 'no-sleep-app';
 
-const noSleep = new NoSleepJs();
+const noSleep = new NoSleepApp();
 
 // Enable to prevent sleep
 noSleep.enable();
@@ -52,7 +65,7 @@ noSleep.enable();
 noSleep.disable();
 ```
 
-You can also check whether **no-sleep-js** is currently active:
+Check whether **no-sleep-app** is currently active:
 
 ```javascript
 if (noSleep.isEnabled) {
@@ -61,14 +74,3 @@ if (noSleep.isEnabled) {
   console.log('NoSleep is disabled');
 }
 ```
-
-## Why You Should Use no-sleep-js
-
-In today’s world, where performance and user experience are critical, keeping a device from going to sleep can be essential for certain types of applications. Whether you're building an interactive video player, a gaming platform, or any web-based service that requires continuous screen activity, **no-sleep-js** provides a reliable solution. It’s built to be cross-browser and fully functional on both modern and older devices, ensuring your users won’t face interruptions during their experience.
-
-## License
-
-MIT License  
-Copyright (c) 2024 Vitalii Semianchuk  
-
-[LinkedIn Profile](https://www.linkedin.com/in/vitalii-semianchuk-9812a786/)
