@@ -1,5 +1,5 @@
 {
-  "name": "no-sleep-js",
+  "name": "no-sleep-app",
   "version": "1.0.0",
   "description": "NoSleepJs is a lightweight JavaScript library that prevents devices from going to sleep during critical activities. It uses the Screen Wake Lock API or a fallback video playback method to keep the screen active, ensuring uninterrupted user experiences across modern and legacy devices.",
   "main": "script.js",
