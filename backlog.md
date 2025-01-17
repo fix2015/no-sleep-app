@@ -1,0 +1,3 @@
+- Move on typescript
+- remove console
+- add stats
