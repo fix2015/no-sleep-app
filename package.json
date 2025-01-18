@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx port-client 3000 --kill 9000 && webpack serve --mode development",
     "test": "npm test",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build:tsx": "npx tsc"
   },
   "keywords": [
     "no-sleep",
