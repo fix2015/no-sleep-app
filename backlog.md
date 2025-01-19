@@ -1,0 +1,2 @@
+- remove console
+- add stats

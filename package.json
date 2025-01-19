@@ -1,6 +1,6 @@
 {
   "name": "no-sleep-app",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "NoSleepApp is a lightweight JavaScript library that prevents devices from going to sleep during critical activities. It uses the Screen Wake Lock API or a fallback video playback method to keep the screen active, ensuring uninterrupted user experiences across modern and legacy devices.",
   "main": "dist/bundle.js",
   "scripts": {
