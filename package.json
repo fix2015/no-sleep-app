@@ -1,12 +1,13 @@
 {
   "name": "no-sleep-app",
-  "version": "1.2.0",
+  "version": "2.0.1",
   "description": "NoSleepApp is a lightweight JavaScript library that prevents devices from going to sleep during critical activities. It uses the Screen Wake Lock API or a fallback video playback method to keep the screen active, ensuring uninterrupted user experiences across modern and legacy devices.",
   "main": "dist/bundle.js",
   "scripts": {
-    "start": "npx port-client 9000 --kill && webpack serve --mode development",
+    "start": "npx port-client 3000 --kill 9000 && webpack serve --mode development",
     "test": "npm test",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build:tsx": "npx tsc"
   },
   "keywords": [
     "no-sleep",
@@ -32,6 +33,7 @@
     "file-loader": "^6.2.0",
     "jsdoc": "^4.0.4",
     "json-loader": "^0.5.7",
+    "typescript": "^5.7.3",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.0",
     "webpack-dev-server": "^4.0.0"

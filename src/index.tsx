@@ -3,51 +3,58 @@
  * by leveraging different strategies depending on platform capabilities.
  */
 
-import VisibilityListener from './visibility-listener.js';
-import NoSleepElement from './no-sleep-element.js';
-import { isOldIOS } from './detect.js';
+import VisibilityListener from './visibility-listener';
+import NoSleepElement from './no-sleep-element';
+import { isOldIOS } from './detect';
+
+type NoSleepStrategy = 'wakeLock' | 'video' | 'legacy';
 
 /**
  * Determines if the native Wake Lock API is supported.
  * @returns {boolean} True if Wake Lock API is supported.
  */
-const isNativeWakeLockSupported = () => "wakeLock" in navigator;
+const isNativeWakeLockSupported = (): boolean => "wakeLock" in navigator;
 
 /**
  * NoSleepApp prevents devices from entering sleep mode.
  * It uses the Wake Lock API, older iOS hacks, or video playback depending on device support.
  */
 export default class NoSleepApp {
-  /**
-   * @param {Object} options Configuration options for NoSleepApp.
-   * @param {'wakeLock'|'video'|'legacy'} [options.strategy='wakeLock'] The strategy to use for preventing sleep.
-   * @param {number} [options.retryInterval=10000] Interval to retry enabling Wake Lock if it fails (in milliseconds).
-   * @param {boolean} [options.fallbackEnabled=true] Whether to enable fallback mechanisms if Wake Lock is not available.
-   */
-  constructor(options = {}) {
-    const defaultOptions = {
+  private options: {
+    strategy: NoSleepStrategy;
+    retryInterval: number;
+    fallbackEnabled: boolean;
+  };
+
+  private enabled: boolean;
+  private _wakeLock: WakeLockSentinel | null = null; // Initialized to null
+  private visibilityListener: VisibilityListener | null = null; // Initialized to null
+  private noSleepTimer: NodeJS.Timeout | null = null; // Initialized to null
+  private noSleepElement: NoSleepElement | null = null; // Initialized to null
+
+  constructor(options: {
+    strategy?: NoSleepStrategy;
+    retryInterval?: number;
+    fallbackEnabled?: boolean;
+  } = {}) {
+    const defaultOptions: { 
+      strategy: NoSleepStrategy; 
+      retryInterval: number; 
+      fallbackEnabled: boolean; 
+    } = {
       strategy: 'wakeLock', // Default strategy is wakeLock
       retryInterval: 10000,  // Default retry interval is 10 seconds
       fallbackEnabled: true, // Default fallback is enabled
     };
-    this.options = { ...defaultOptions, ...options };
 
-    /**
-     * @type {boolean} Indicates whether NoSleepApp is currently enabled.
-     */
+    this.options = { ...defaultOptions, ...options };
     this.enabled = false;
 
     if (isNativeWakeLockSupported() && this.options.strategy === 'wakeLock') {
-      /** @type {WakeLockSentinel|null} The active Wake Lock instance. */
-      this._wakeLock = null;
-
-      /** @type {VisibilityListener|null} Listener for visibility changes to re-enable Wake Lock. */
       this.visibilityListener = new VisibilityListener(this.enable.bind(this));
     } else if (isOldIOS() && this.options.strategy === 'legacy') {
-      /** @type {number|null} Timer ID for the iOS hack to prevent sleep. */
       this.noSleepTimer = null;
     } else {
-      /** @type {NoSleepElement} Video element for non-iOS and non-Wake Lock devices. */
       this.noSleepElement = new NoSleepElement();
       this.noSleepElement.setMetadataListener();
     }
@@ -57,7 +64,7 @@ export default class NoSleepApp {
    * Checks if NoSleepApp is enabled.
    * @returns {boolean} True if NoSleepApp is enabled.
    */
-  get isEnabled() {
+  get isEnabled(): boolean {
     return this.enabled;
   }
 
@@ -67,16 +74,18 @@ export default class NoSleepApp {
    * @returns {Promise<void>} Resolves when enabling is complete.
    * @throws {Error} Throws an error if enabling fails.
    */
-  async enable() {
+  async enable(): Promise<void> {
     if (this.options.strategy === 'wakeLock' && isNativeWakeLockSupported()) {
       try {
         this._wakeLock = await navigator.wakeLock.request("screen");
         this.enabled = true;
         console.log("Wake Lock active.");
         this._wakeLock.addEventListener("release", this._onWakeLockRelease);
-      } catch (err) {
+      } catch (err: unknown) {
         this.enabled = false;
-        console.error(`${err.name}, ${err.message}`);
+        if (err instanceof Error) {
+          console.error(`${err.name}, ${err.message}`);
+        }
         throw err;
       }
     } else if (this.options.strategy === 'legacy' && isOldIOS()) {
@@ -90,7 +99,7 @@ export default class NoSleepApp {
    * Handles Wake Lock release events.
    * @private
    */
-  _onWakeLockRelease() {
+  private _onWakeLockRelease(): void {
     console.log("Wake Lock released.");
   }
 
@@ -99,7 +108,7 @@ export default class NoSleepApp {
    * This hack repeatedly refreshes the page.
    * @private
    */
-  _enableOldIOS() {
+  private _enableOldIOS(): void {
     this.disable();
     console.warn("NoSleep enabled for older iOS devices. This can interrupt active network requests.");
     this.noSleepTimer = setInterval(() => {
@@ -117,11 +126,11 @@ export default class NoSleepApp {
    * @returns {Promise<void>} Resolves when video playback is successfully started.
    * @throws {Error} Throws an error if video playback fails.
    */
-  async _enableVideoPlayback() {
+  private async _enableVideoPlayback(): Promise<void> {
     try {
-      await this.noSleepElement.play();
+      await this.noSleepElement?.play();
       this.enabled = true;
-    } catch (err) {
+    } catch (err: unknown) {
       this.enabled = false;
       console.error("Failed to start video playback:", err);
       throw err;
@@ -132,7 +141,7 @@ export default class NoSleepApp {
    * Disables NoSleepApp functionality.
    * Stops Wake Lock, iOS hack, or video playback depending on the platform.
    */
-  disable() {
+  disable(): void {
     if (this.options.strategy === 'wakeLock' && isNativeWakeLockSupported()) {
       if (this._wakeLock) {
         this._wakeLock.release();
@@ -148,7 +157,7 @@ export default class NoSleepApp {
         this.noSleepTimer = null;
       }
     } else if (this.options.strategy === 'video') {
-      this.noSleepElement.pause();
+      this.noSleepElement?.pause();
     }
     this.enabled = false;
   }
