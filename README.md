@@ -10,6 +10,9 @@ As developers, maintaining an uninterrupted user experience is paramount. Howeve
 
 ---
 
+### Video in tiktok
+[Watch video](https://www.tiktok.com/@jsmentoring/video/7466939186528931104)
+
 ### Key Features
 
 - **Universal Device Support:** Works across modern browsers and older iOS devices.
